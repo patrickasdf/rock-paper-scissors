@@ -47,8 +47,9 @@ function playRound(humanChoice, computerChoice) {
             console.log("You win! Rock beats Scissors")
             humanScore++;
         }
-        console.log("Tie! Both chose Rock") // Computer rock
-        humanScore;
+        else { // Computer rock
+            console.log("Tie! Both chose Rock") // Computer rock
+        }
     }
 
     else if (humanChoice === 1) { // Player chose paper
@@ -60,8 +61,9 @@ function playRound(humanChoice, computerChoice) {
             console.log("You lose! Scissors beats Paper")
             computerScore++;
         }
-        console.log("Tie! Both chose Paper") // Computer paper
-        humanScore; 
+        else { // Computer paper
+            console.log("Tie! Both chose Paper")
+        }
     }
 
     else if (humanChoice === 2) { // Player chose scissors
@@ -73,16 +75,23 @@ function playRound(humanChoice, computerChoice) {
             console.log("You win! Scissors beats paper")
             humanScore++;
         }
-        console.log("Tie! Both chose Scissors") // Computer scissors
+        else { // Computer scissors
+            console.log("Tie! Both chose Scissors")
+         } 
     }
-    console.log("End of round!")
     console.log("Player score = " + parseInt(humanScore) + 
         " & computer score = " + parseInt(computerScore))
     return
-
 } 
 
-const humanSelection = getHumanChoice();
-const computerSelection = getComputerChoice();
+function playGame() { // 
+    let rounds = 5;
+    for (let i = 0; i < rounds; i++) {
+        const humanSelection = getHumanChoice();
+        const computerSelection = getComputerChoice();
+        playRound(humanSelection, computerSelection);
+        console.log("--- End of round " + parseInt(i+1) + " ---");
+    }
+}
 
-playRound(humanSelection, computerSelection);
+playGame();
