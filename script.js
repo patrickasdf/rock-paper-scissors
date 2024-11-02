@@ -1,97 +1,129 @@
 function getComputerChoice() {
     numberChosen = Math.floor(Math.random() * 3); // Returns 0, 1, 2
     if (numberChosen === 0) {
-        console.log("Computer chose Rock")
-        return 0
+        return "Rock";
     } 
     else if (numberChosen === 1) {
-        console.log("Computer chose Paper")
-        return 1
+        return "Paper";
     }
-    console.log("Computer chose Scissors") // value is 2
-    return 2
-};
-
-function getHumanChoice() {
-    choice = prompt("Choose 'Rock', 'Paper', or 'Scissors'")
-    if (choice != null){
-        choice = choice.toLowerCase()
-        while (choice === "rock" || choice === "paper" || choice === "scissors"){
-            if (choice === "rock") {
-                console.log("Player chose Rock")
-                return 0
-            }
-            else if (choice === "paper") {
-                console.log("Player chose Paper")
-                return 1
-            }
-            console.log("Player chose Scissors")
-            return 2
-        }
-        console.log("Invalid player selection");       
-    }
+    return "Scissors";
 };
 
 let humanScore = 0;
 let computerScore = 0;
-console.log("Initial scores: Player = " + parseInt(humanScore) 
-    + " & Computer = " + computerScore)
 
 function playRound(humanChoice, computerChoice) {
-    if (humanChoice === 0) { // Player chose rock
-        if (computerChoice === 1){ // Computer paper
-            console.log("You lose! Paper beats Rock")
+    if (humanChoice === "Rock") { 
+        if (computerChoice === "Paper"){ 
+            scoreTied.textContent = '';
             computerScore++;
         }
-        else if (computerChoice === 2) { //Computer scissors
-            console.log("You win! Rock beats Scissors")
+        else if (computerChoice === "Scissors") { 
+            scoreTied.textContent = '';
             humanScore++;
         }
-        else { // Computer rock
-            console.log("Tie! Both chose Rock") // Computer rock
+        else { // both rock
+            scoreTied.textContent = "Tie! Both rock";
         }
     }
 
-    else if (humanChoice === 1) { // Player chose paper
-        if (computerChoice === 0){ // Computer rock
-            console.log("You win! Paper beats Rock")
+    else if (humanChoice === "Paper") { 
+        if (computerChoice === "Rock"){ 
+            scoreTied.textContent = '';
             humanScore++;
         }
-        else if (computerChoice === 2) { //Computer scissors
-            console.log("You lose! Scissors beats Paper")
+        else if (computerChoice === "Scissors") { 
+            scoreTied.textContent = '';
             computerScore++;
         }
-        else { // Computer paper
-            console.log("Tie! Both chose Paper")
+        else { // both paper
+            scoreTied.textContent = "Tie! Both paper";
         }
     }
 
-    else if (humanChoice === 2) { // Player chose scissors
-        if (computerChoice === 0) { // Computer rock
-            console.log("You lose! Rock beats Scissors")
+    else if (humanChoice === "Scissors") { 
+        if (computerChoice === "Rock") { 
+            scoreTied.textContent = '';
             computerScore++;
         }
-        if (computerChoice === 1) { // Computer paper
-            console.log("You win! Scissors beats paper")
+        if (computerChoice === "Paper") { 
+            scoreTied.textContent = '';
             humanScore++;
         }
-        else { // Computer scissors
-            console.log("Tie! Both chose Scissors")
+        else { // both scissors
+            scoreTied.textContent = "Tie! Both scissors";
          } 
     }
-    console.log("Player score = " + parseInt(humanScore) + 
-        " & computer score = " + parseInt(computerScore))
-    return
+    scoreDiv.textContent = "Player = " + humanScore + 
+        " ** Computer = " + computerScore;
+    recentChoices.textContent = "Recent selections:\nPlayer: " + 
+        humanChoice + "\nComputer: " + computerChoice;
+    return humanScore, computerScore;
 } 
 
-function playGame() { // 
-    let rounds = 5;
-    for (let i = 0; i < rounds; i++) {
-        const humanSelection = getHumanChoice();
-        const computerSelection = getComputerChoice();
-        playRound(humanSelection, computerSelection);
-        console.log("--- End of round " + parseInt(i+1) + " ---");
-    }
-}
+const div = document.querySelector('div');
 
-playGame();
+const gameDeclaration = document.createElement("pre");
+gameDeclaration.textContent = 
+    " Rock, Paper, Scissors!\nSelect your choice below:";
+gameDeclaration.style.backgroundColor = "pink";
+gameDeclaration.style.maxWidth = "195px";
+div.appendChild(gameDeclaration);
+
+const btnRock = document.createElement("button");
+btnRock.id = "btnRock";
+btnRock.style.margin = "4px";
+btnRock.textContent = "Rock";
+div.appendChild(btnRock);
+const btnPaper = document.createElement("button");
+btnPaper.id = "btnPaper";
+btnPaper.style.margin = "4px";
+btnPaper.textContent = "Paper";
+div.appendChild(btnPaper);
+const btnScissors = document.createElement("button");
+btnScissors.id = "btnScissors";
+btnScissors.style.margin = "4px";
+btnScissors.textContent = "Scissors";
+div.appendChild(btnScissors);
+
+div.addEventListener('click', (event) => {
+    let target = event.target;
+    scoreWinner.textContent = '';
+
+    switch(target.id) {
+        case 'btnRock':
+            playRound("Rock", getComputerChoice());
+            break;
+        case 'btnPaper':
+            playRound("Paper", getComputerChoice());
+            break;
+        case 'btnScissors':
+            playRound("Scissors", getComputerChoice());
+            break;
+    }
+    if (humanScore == 5) {
+        scoreWinner.textContent = "You win! :)";
+        computerScore = 0;
+        humanScore = 0;
+    }
+    else if (computerScore == 5) {
+        scoreWinner.textContent = "You lose :(";
+        computerScore = 0;
+        humanScore = 0;
+    }
+});
+
+const scoreDiv = document.createElement("div");
+scoreDiv.textContent = "Player = " + parseInt(humanScore) + 
+        " **  Computer = " + parseInt(computerScore);
+document.body.appendChild(scoreDiv); 
+
+const scoreWinner = document.createElement("div");
+scoreWinner.setAttribute("style", "color: red");
+scoreWinner.style.fontSize = "20px";
+document.body.appendChild(scoreWinner);
+
+const recentChoices = document.createElement("pre");
+document.body.appendChild(recentChoices);
+const scoreTied = document.createElement("pre");
+document.body.appendChild(scoreTied);
